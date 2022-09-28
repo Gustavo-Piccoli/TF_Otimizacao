@@ -62,7 +62,6 @@ def solucao_inicial(matriz, volume_max_conteiner, numero_conteineres):
             controle_aux = controle.copy()
             while(len(controle_aux) > 0):
                 item = random.choice(controle_aux)
-                #Esse if faz com que o container fique muito preenchido
                 if((volume_conteiner_individual(matriz, conteiner) + matriz[-1][item]) <= volume_max_conteiner):
                     conteiner.append(item)
                     controle.remove(item)
@@ -83,6 +82,7 @@ def solucao_vizinha(matriz, solucao_original, volume_max_conteiner, numero_conte
     nova_solucao = solucao_original[1].copy()
     index_container_aleatorio = random.choice(range(numero_conteineres))
     controle = list(range (matriz[0][0]))
+    #Esses 2 lacos aninhados geram os novos possiveis itens que podem ser colocados no novo container
     for i in nova_solucao:
         for j in i:
             controle.remove(j)
@@ -110,13 +110,12 @@ def simulated_annealing(matriz, volume_conteiner, numero_conteineres, numero_ite
             count += 1
             vizinho_candidato = solucao_vizinha(matriz, melhor_inicial, volume_conteiner, numero_conteineres)
             delta = vizinho_candidato[0] - melhor_inicial[0]
-            if (delta >= 0):
-                melhor_inicial = vizinho_candidato
+            if (delta >= 0): #########################?Inverter o sinal?#########################
+                melhor_inicial = vizinho_candidato.copy()
             else:
-                if (random.random() < math.exp(-delta/temperatura)): ##############Arrumar aqui####################
-                    melhor_inicial = vizinho_candidato
+                if (random.random() < math.exp(delta/temperatura)): ##############Arrumar aqui####################
+                    melhor_inicial = vizinho_candidato.copy()
         temperatura = temperatura * fator_resfriamento
-    print(count)
     return melhor_inicial
 
 
@@ -125,33 +124,11 @@ if  __name__ == "__main__":
     matrizes = cria_matrizes(arquivos)
     numero_conteineres = 10
     volumes_conteineres = volumes_maximos_conteineres(matrizes, numero_conteineres)
-    numero_iteracoes = 1000 #Alterar o valor daqui
+    numero_iteracoes = 100 #Alterar o valor daqui
+    print("\nnumero_iteracoes = ", numero_iteracoes)
     temperatura = 100 #Alterar o valor daqui
-    fator_resfriamento = 0.9 #Alterar o valor daqui (deve ser entre 0 e 1) 
+    print("temperatura = ", temperatura)
+    fator_resfriamento = 0.9999 #Alterar o valor daqui (deve ser entre 0 e 1)
+    print("fator_resfriamento = ", fator_resfriamento)
     s = simulated_annealing(matrizes[0], volumes_conteineres[0], numero_conteineres, numero_iteracoes, temperatura, fator_resfriamento)
-    print(s)
-
-'''
-##################################INACABADO##################################
-#Simulated Annealing com apenas o laco de iteracoes (sem o de temperatura)
-def simulated_annealing1(matriz, 
-                        volume_conteiner, 
-                        numero_conteineres, 
-                        numero_iteracoes, 
-                        temperatura, 
-                        fator_resfriamento):
-    melhor_inicial = () #Implementar aqui a funcao de encontrar um melhor aleatorio
-    for i in range(numero_iteracoes):
-        vizinho_candidato = () #Implementar aqui a funcao de vizinhanca, que pega o melhor_inicial e gera um vizinho atraves de uma perturbacao
-        delta = vizinho_candidato - melhor_inicial
-        if (delta <= 0):
-            melhor_inicial = vizinho_candidato
-        else:
-            if (random.random() < math.exp(-delta/temperatura)): #Alterar o random daqui
-                melhor_inicial = vizinho_candidato
-        temperatura = temperatura * fator_resfriamento
-    return melhor_inicial
-
-    #Essa linha em comentario em baixo, seria relevante caso quisessemos que o vizinho fosse apenas um iten de um container diferente
-    #index_iten_aleatorio = solucao_vizinha[1][index_container_aleatorio].index(random.choice(solucao_vizinha[1][index_container_aleatorio]))
-'''
+    print("final =", s, end="")
