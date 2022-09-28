@@ -15,7 +15,8 @@ arquivos = ["pcmcdc1.txt", "pcmcdc2.txt",
 def cria_matrizes(arquivos):
     matrizes = []
     for arquivo in arquivos:
-        with open(arquivo) as conteudo_arquivo:
+        diretorio = "pcmcdc/" + arquivo
+        with open(diretorio) as conteudo_arquivo:
             matriz = []
             for linha in conteudo_arquivo:
                 matriz.append(list(map(int, linha.split())))
@@ -120,6 +121,13 @@ def simulated_annealing(matriz, volume_conteiner, numero_conteineres, numero_ite
 
 
 if  __name__ == "__main__":
+    
+    #Os parametros dos testes finais devem ser:
+    #numero_conteineres = 10
+    #numero_iteracoes = 4000
+    #temperatura = 4000
+    #fator_resfriamento = 0.9999
+    
     random.seed(1) #Fixa a semente do random para que os resultados sejam sempre os mesmos
     matrizes = cria_matrizes(arquivos)
     numero_conteineres = 10
@@ -128,7 +136,21 @@ if  __name__ == "__main__":
     print("\nnumero_iteracoes = ", numero_iteracoes)
     temperatura = 100 #Alterar o valor daqui
     print("temperatura = ", temperatura)
-    fator_resfriamento = 0.9999 #Alterar o valor daqui (deve ser entre 0 e 1)
+    fator_resfriamento = 0.9 #Alterar o valor daqui (deve ser entre 0 e 1)
     print("fator_resfriamento = ", fator_resfriamento)
-    s = simulated_annealing(matrizes[0], volumes_conteineres[0], numero_conteineres, numero_iteracoes, temperatura, fator_resfriamento)
+
+
+    #Caso voce queira executar testes individuais sobre os arquivos, basta trocar 
+    #os valores de matrizes[x] e volumes_conteineres[x] para testar com outros arquivos.
+    #Já foi feito com os arquivos 1 (indice 0)
+    s = simulated_annealing(matrizes[1], volumes_conteineres[1], numero_conteineres, numero_iteracoes, temperatura, fator_resfriamento)
     print("final =", s, end="")
+
+
+    #Caso voce queira executar todos os testes de uma só vez, basta tirar de comentario o seguinte trecho:
+    '''
+    for i in range(len(matrizes)):
+        print("Arquivo", i+1)
+        print('inicial = ', solucao_inicial(matrizes[i], volumes_conteineres[i], numero_conteineres))
+        print("final =", simulated_annealing(matrizes[i], volumes_conteineres[i], numero_conteineres, numero_iteracoes, temperatura, fator_resfriamento), "\n")
+    '''
