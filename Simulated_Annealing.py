@@ -1,6 +1,7 @@
 #Bibliotecas a serem importadas
 import random
 import math
+import time
 
 
 #Nomes dos arquivos
@@ -133,17 +134,21 @@ if  __name__ == "__main__":
     matrizes = cria_matrizes(arquivos)
     numero_conteineres = 10
     volumes_conteineres = volumes_maximos_conteineres(matrizes, numero_conteineres)
-    numero_iteracoes = 4000 #Alterar o valor daqui
-    print("\nnumero_iteracoes = ", numero_iteracoes)
-    temperatura = 4000 #Alterar o valor daqui
+    numero_iteracoes = 40 #Alterar o valor daqui
+    print("###################################################################################################")
+    print("numero_iteracoes = ", numero_iteracoes)
+    temperatura = 40 #Alterar o valor daqui
     print("temperatura = ", temperatura)
-    fator_resfriamento = 0.9999 #Alterar o valor daqui (deve ser entre 0 e 1)
+    fator_resfriamento = 0.99 #Alterar o valor daqui (deve ser entre 0 e 1)
     print("fator_resfriamento = ", fator_resfriamento, "\n")
 
-
-    #Gustavo 5-9
-    #Henrique 0-4
-    for i in range(2):
+    
+    #for i in range(5, 10): #Comandos Gustavo Falta range(8, 10)
+    for i in range(0, 5): #Comandos Henrique
+        t0 = time.time()
         random.seed(1)
-        print("\nArquivo",i,)
+        print("###################################################################################################")
+        print("Arquivo",i+1)
         print("\nResultado Final =", simulated_annealing(matrizes[i], volumes_conteineres[i], numero_conteineres, numero_iteracoes, temperatura, fator_resfriamento), "\n")
+        t1 = time.time()
+        print("Tempo de execucao = ", t1-t0, "s\n\n\n")
