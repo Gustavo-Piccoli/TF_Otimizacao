@@ -106,12 +106,15 @@ def solucao_vizinha(matriz, solucao_original, volume_max_conteiner, numero_conte
 #Simulated Annealing com o laco de iteracoes e o de temperatura
 def simulated_annealing(matriz, volume_conteiner, numero_conteineres, numero_iteracoes, temperatura, fator_resfriamento):
     melhor_inicial = solucao_inicial(matriz, volume_conteiner, numero_conteineres)
+    melhor_melhor = melhor_inicial.copy()
     print("Inicial = ", melhor_inicial)
     count = 0
     while(temperatura > 1):
         for i in range(numero_iteracoes):
             count += 1
             vizinho_candidato = solucao_vizinha(matriz, melhor_inicial, volume_conteiner, numero_conteineres)
+            if (vizinho_candidato[0] > melhor_melhor[0]):
+                melhor_melhor = vizinho_candidato.copy()
             delta = vizinho_candidato[0] - melhor_inicial[0]
             if (delta >= 0):
                 melhor_inicial = vizinho_candidato.copy()
@@ -119,6 +122,7 @@ def simulated_annealing(matriz, volume_conteiner, numero_conteineres, numero_ite
                 if (random.random() < math.exp(delta/temperatura)):
                     melhor_inicial = vizinho_candidato.copy()
         temperatura = temperatura * fator_resfriamento
+    print("Melhor_Melhor = ", melhor_melhor)
     return melhor_inicial
 
 
@@ -134,17 +138,17 @@ if  __name__ == "__main__":
     matrizes = cria_matrizes(arquivos)
     numero_conteineres = 10
     volumes_conteineres = volumes_maximos_conteineres(matrizes, numero_conteineres)
-    numero_iteracoes = 40 #Alterar o valor daqui
+    numero_iteracoes = 4000 #Alterar o valor daqui
     print("###################################################################################################")
     print("numero_iteracoes = ", numero_iteracoes)
-    temperatura = 40 #Alterar o valor daqui
+    temperatura = 4000 #Alterar o valor daqui
     print("temperatura = ", temperatura)
-    fator_resfriamento = 0.99 #Alterar o valor daqui (deve ser entre 0 e 1)
+    fator_resfriamento = 0.9999 #Alterar o valor daqui (deve ser entre 0 e 1)
     print("fator_resfriamento = ", fator_resfriamento, "\n")
 
     
     #for i in range(5, 10): #Comandos Gustavo Falta range(8, 10)
-    for i in range(0, 5): #Comandos Henrique
+    for i in range(8, 10): #Comandos Henrique
         t0 = time.time()
         random.seed(1)
         print("###################################################################################################")
